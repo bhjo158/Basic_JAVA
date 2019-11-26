@@ -1,2 +1,2 @@
-# Basic_JAVA_001
+# Basic_JAVA
 Java학원 수업내용

@@ -1,12 +1,20 @@
 package problem.fafatouch;
 
-import java.util.Scanner;
+import java.util.Scanner; // java에서 기본적으로 제공하는 클래스를 빌려오기 위해 import
 
 public class FaFaMain {
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+		/*
+		 * 여러분들이 어떤 기능을 빌려서 사용하시면
+		 * 반드시 반납을 하셔야 하는 경우가 있습니다.
+		 * 1.파일 입력&출력 File I/O	(I:input / O:output)
+		 * 2.데이터베이스 관련 작업
+		 */
+		Scanner sc = new Scanner(System.in); // 자원 쓰고나서 반납해야됨
 		// 메인메뉴를 저장하는 5칸짜리 배열 생성
-		String[][] mainMenu = new String[5][2];
+		String[][] mainMenu = new String[5][2]; // 담아서 쓰는 공간 = 실질적인 결과물
+		// 오른쪽 그대로 써도 되긴 하지만 불편해서 담아서 쓴다
+		// 리턴할때 담아서 리턴하는 것과 같은 원리
 		// [5][2]
 		// [5]는 메뉴 5개
 		// [2]는 메뉴이름[0] / 메뉴가격[1]
@@ -119,15 +127,16 @@ public class FaFaMain {
 				}
 			}
 			
-			
+			// 문자열타입에 있는 값을 숫자로 바꿔주는 것
+			// 특별한점은 객체자료형을 기본자료형으로 바꿔주는 것
 			int mPrice = Integer.parseInt(mainMenu[mainNum][1]);
 			int sPrice = Integer.parseInt(sideMenu[sideNum][1]);
 			int dPrice = Integer.parseInt(drinkMenu[drinkNum][1]);
 			// 총주문금액 계산!
 			int totPrice = mPrice + sPrice + dPrice;
 			String order;
+			String smallAns;
 			
-			while(true) {
 				// 출력!!
 				System.out.println("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒");
 				System.out.println("▒▒ 고객님께서 주문하신 메뉴는 ");
@@ -146,11 +155,15 @@ public class FaFaMain {
 				// sc.nextLine()을 사용해서 한줄개행입력을
 				// 대신 받아주는 부분이 필요함!!
 				sc.nextLine(); // 한줄개행 받는 부분
+			while(true) {	
 				order = sc.nextLine();
+				// order.toUpperCase(); // 대문자변환
+				smallAns = order.toLowerCase();
 				if(order.equals("y") || order.equals("n")) {
 					break;
 				} else {
 					System.out.println("▒▒ y 또는 n으로 입력하세요.");
+					continue;
 				}
 			}
 			
@@ -169,17 +182,21 @@ public class FaFaMain {
 						if(totPrice < money) {
 							System.out.println((money-totPrice)+"원 거스름돈 받아가세요.");
 						}
+						// 지불금액 == 결제금액
+						// 지불금액 > 결제금액(거스름돈 주고)
 						break;
 					}
 				}
-				break;
+				System.out.println("▒▒ 결제완료! 맛있게 드세요:)");
+				continue;
 			} else {
 				System.out.println("▒▒ 다시 주문하세요.");
+				continue;
 				// 시스템에 처음으로 돌아가세요!
 			}
 			
 		}
-		
+		// sc.close(); // 사용한 자원 반납
 		
 	}
 }

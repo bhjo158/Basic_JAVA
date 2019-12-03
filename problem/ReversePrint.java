@@ -15,10 +15,18 @@ public class ReversePrint {
 	// 1
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
+		
 		System.out.print("입력>> ");
+		// num = 키보드로 입력한 정수값
 		int num = sc.nextInt();
+		
 		for(int i=0; i<num; i++) {
 			System.out.println(num-i);
 		}
+		
+		for(int i=num; i>=1; i--) {
+			System.out.println(i);
+		}
+		
 	}
 }

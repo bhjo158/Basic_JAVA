@@ -23,77 +23,92 @@ public class BankMain {
 			System.out.println("■■ 1.계좌개설");
 			System.out.println("■■ 2.입금");
 			System.out.println("■■ 3.출금");
-			System.out.println("■■ 4.계좌조회");
-			System.out.println("■■ 5.사용자검색");
-			System.out.println("■■ 6.프로그램 종료");
+			System.out.println("■■ 4.전체고객조회");
+			System.out.println("■■ 5.계좌잔액조회");
+			System.out.println("■■ 6.계좌해지");
+			System.out.println("■■ 7.프로그램 종료");
 			System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 			
 			while(true) {
 				System.out.print("■■ 번호 >> ");
 				code = sc.nextInt();
 				
-				if(code >= 1 && code <= 6) {
+				if(code >= 1 && code <= 7) {
 					break;
 				} else {
-					System.out.println("■■ 1~6까지만 입력하세요.");
+					System.out.println("■■ 1~7까지만 입력하세요.");
 					continue;
 				}
 				
 			}
 			
 			if(code == 1) {
-				System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-				System.out.println("■■ 계좌를 개설합니다.");
-				System.out.println("■■ 개설하시는 분의 이름을 입력하세요.");
-				System.out.print("■■ 예금주 >> ");
+				System.out.println("■■ 신규계좌를 개설합니다. 값을 입력해주세요.");
+				System.out.print("■■ 계좌주 >> ");
 				sc.nextLine();
 				String bname = sc.nextLine();
-				System.out.println("■■ 계좌의 비밀번호를 입력하세요.");
-				System.out.print("■■ 비밀번호 >> ");
+				System.out.println("■■ 패스워드 >> ");
 				String pw = sc.nextLine();
-				bDto = new BankDTO(bname, pw);
-				bDao.createAccount(bDto);
-				
+				bDao.insertBank(bname, pw);
 			} else if(code == 2) {
-				System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 				System.out.println("■■ 입금할 계좌번호를 입력해주세요.");
 				System.out.print("■■ 계좌번호 >> ");
 				int bno = sc.nextInt();
-				System.out.println("■■ 입금할 액수를 입력해주세요.");
-				System.out.print("■■ 금액 >> ");
+				System.out.println("■■ 입금하실 금액을 입력해주세요.");
+				System.out.print("■■ 입금액 >> ");
 				int money = sc.nextInt();
-				bDto = new BankDTO(bno, money);
-				bDao.deposit(bDto);
-				
+				bDao.deposit(bno, money);
 			} else if(code == 3) {
-				System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-				System.out.println("■■ 출금할 계좌번호를 입력해주세요.");
+				System.out.println("■■ 출금할 계좌번호와 암호를 입력해주세요.");
 				System.out.print("■■ 계좌번호 >> ");
 				int bno = sc.nextInt();
-				System.out.println("■■ 출금할 계좌의 비밀번호를 입력해주세요.");
-				System.out.print("■■ 비밀번호 >> ");
+				System.out.print("■■ 패스워드 >> ");
 				sc.nextLine();
 				String pw = sc.nextLine();
-				System.out.println("■■ 출금할 액수를 입력해주세요.");
-				System.out.print("■■ 금액 >> ");
-				int money = sc.nextInt();
-				bDto = new BankDTO(bno, pw, money);
-				bDao.withdraw(bDto);
+				
+				if(bDao.checkUser(bno, pw)) {
+					// 체크를 통과한 경우에만 값을 출금하게 작성!!!
+					int balance = bDao.balanceMoney(bno); // 잔액
+					System.out.println("■■ 잔액 : " + balance);
+					System.out.println("■■ 출금하실 금액을 입력해주세요.");
+					System.out.print("■■ 출금액 >> ");
+					int money = sc.nextInt(); // 출금액
+					
+					// 잔액 = 출금액 = 0			>> 출금
+					// 잔액 > 출금액 = 잔액-출금액	>> 출금
+					// 잔액 < 출금액 = 잘못입력		>> 경고메세지
+					if(balance < money) {
+						System.out.println("■■ 잔액이 부족합니다. 확인해주세요.");
+					} else {
+						bDao.withdraw(bno, money);
+					}
+					
+				} else {
+					System.out.println("■■ 존재하지 않는 계좌번호이거나 암호가 틀렸습니다.");
+				}
 				
 			} else if(code == 4) {
 				System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-				System.out.println("■■ 전체 계좌를 조회합니다.");
-				bDao.selectAccount();
-				
-			} else if(code == 5) {
-				System.out.println("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-				System.out.println("■■ 사용자를 검색합니다.");
-				System.out.print("■■ 예금주 >> ");
+				System.out.println("■■ 전체 고객을 조회합니다.");
+				bDao.selectBank();
+			} else if(code == 5) { // 계좌 조회(1건)
+				// 계좌번호, 패스워드
+				System.out.println("■■ 계좌를 조회합니다. 계좌번호와 암호를 입력하세요.");
+				System.out.print("■■ 계좌번호 >> ");
+				int bno = sc.nextInt();
+				System.out.print("■■ 패스워드 >> ");
 				sc.nextLine();
-				String bname = sc.nextLine();
-				bDao.search(bname);
-				
+				String pw = sc.nextLine();
+				bDao.selectAccount(bno, pw);
 			} else if(code == 6) {
+				System.out.println("■■ 계좌를 해지합니다. 값을 입력해주세요.");
+				System.out.print("■■ 계좌번호 >> ");
+				int bno = sc.nextInt();
+				System.out.print("■■ 패스워드 >> ");
+				sc.nextLine();
+				String pw = sc.nextLine();
+				bDao.deleteBank(bno, pw);
+			} else if(code == 7) {
 				System.out.println("[프로그램을 종료합니다]");
 				System.exit(0);
 			}

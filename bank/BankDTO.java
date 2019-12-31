@@ -17,6 +17,12 @@ public class BankDTO {
 		this.pw = pw;
 	}
 	
+	public BankDTO(int bno, String pw) {
+		super();
+		this.bno = bno;
+		this.pw = pw;
+	}
+
 	public BankDTO(int bno, int money) {
 		super();
 		this.bno = bno;

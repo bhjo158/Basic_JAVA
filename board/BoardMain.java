@@ -39,44 +39,38 @@ public class BoardMain {
 			if(code == 1) {
 				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 				System.out.println("★★ 게시글을 작성합니다.");
-				System.out.print("★★ 제목 입력 >> ");
+				System.out.print("★★ 제목 >> ");
 				sc.nextLine();
 			    String title = sc.nextLine();
-			    System.out.print("★★ 내용 입력 >> ");
+			    System.out.print("★★ 내용 >> ");
 			    String content = sc.nextLine();
-			    System.out.print("★★ 작성자 입력 >> ");
+			    System.out.print("★★ 작성자 >> ");
 			    String writer = sc.nextLine();
-				BoardDTO bDto = new BoardDTO(title, content, writer);
-				bDao.boardInsert(bDto);
-				
+			    bDao.boardInsert(title, content, writer);
 			} else if(code == 2) {
 				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-				System.out.println("★★ 작성된 게시글을 수정합니다.");
-				System.out.print("★★ 게시글 번호 입력 >> ");
+				System.out.println("★★ 수정할 게시글 번호를 입력하세요");
+				System.out.print("★★ 게시글 번호 >> ");
 				int bno = sc.nextInt();
 				System.out.println("★★ 게시글을 수정해주세요.");
-				System.out.print("★★ 제목 입력 >> ");
+				System.out.print("★★ 제목 >> ");
 				sc.nextLine();
 			    String title = sc.nextLine();
-			    System.out.print("★★ 내용 입력 >> ");
+			    System.out.print("★★ 내용 >> ");
 			    String content = sc.nextLine();
-			    System.out.print("★★ 작성자 입력 >> ");
+			    System.out.print("★★ 작성자 >> ");
 			    String writer = sc.nextLine();
-				BoardDTO bDto = new BoardDTO(bno, title, content, writer);
-				bDao.boardUpdate(bDto);
-				
+			    bDao.boardUpdate(bno, title, content, writer);
 			} else if(code == 3) {
 				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 				System.out.println("★★ 작성된 게시글을 삭제합니다.");
 				System.out.print("★★ 게시글 번호 입력 >> ");
 				int bno = sc.nextInt();
 				bDao.boardDelete(bno);
-				
 			} else if(code == 4) {
 				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 				System.out.println("★★ 작성된 게시글을 조회합니다.");
 				bDao.boardSelect();
-				
 			} else if(code == 5) {
 				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
 				System.out.println("★★ 작성된 게시글을 검색합니다.");
@@ -84,31 +78,89 @@ public class BoardMain {
 				sc.nextLine();
 				String keyword = sc.nextLine();
 				bDao.boardSearch(keyword);
-				
 			} else if(code == 6) {
-				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-				System.out.println("★★ 조회수 순으로 작성된 게시글을 정렬합니다.");
-				bDao.boardSort();
 				
 			} else if(code == 7) {
-				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-				System.out.println("★★ 보고싶은 게시글번호를 입력하세요.");
-				System.out.println("★★ 게시글번호 >> ");
-				int bno = sc.nextInt();
-				bDao.boardView(bno);
 				
 			} else if(code == 8) {
-				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
-				System.out.println("★★ Name: Board Program");
-				System.out.println("★★ Version: 1.3");
-				System.out.println("★★ Use: JAVA, ORACLE");
-				System.out.println("★★ Date: 2019.12.17");
-				System.out.println("★★ made by bhjo92");
-				System.out.println("★★ ivy9230@gmail.com");
+				
 			} else if(code == 9) {
-				System.out.println("★★★★ [프로그램 종료] ★★★★");
-				System.exit(0);
+				
 			}
+			
+//			if(code == 1) {
+//				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+//				System.out.println("★★ 게시글을 작성합니다.");
+//				System.out.print("★★ 제목 입력 >> ");
+//				sc.nextLine();
+//			    String title = sc.nextLine();
+//			    System.out.print("★★ 내용 입력 >> ");
+//			    String content = sc.nextLine();
+//			    System.out.print("★★ 작성자 입력 >> ");
+//			    String writer = sc.nextLine();
+//				BoardDTO bDto = new BoardDTO(title, content, writer);
+//				bDao.boardInsert(bDto);
+//				
+//			} else if(code == 2) {
+//				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+//				System.out.println("★★ 작성된 게시글을 수정합니다.");
+//				System.out.print("★★ 게시글 번호 입력 >> ");
+//				int bno = sc.nextInt();
+//				System.out.println("★★ 게시글을 수정해주세요.");
+//				System.out.print("★★ 제목 입력 >> ");
+//				sc.nextLine();
+//			    String title = sc.nextLine();
+//			    System.out.print("★★ 내용 입력 >> ");
+//			    String content = sc.nextLine();
+//			    System.out.print("★★ 작성자 입력 >> ");
+//			    String writer = sc.nextLine();
+//				BoardDTO bDto = new BoardDTO(bno, title, content, writer);
+//				bDao.boardUpdate(bDto);
+//				
+//			} else if(code == 3) {
+//				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+//				System.out.println("★★ 작성된 게시글을 삭제합니다.");
+//				System.out.print("★★ 게시글 번호 입력 >> ");
+//				int bno = sc.nextInt();
+//				bDao.boardDelete(bno);
+//				
+//			} else if(code == 4) {
+//				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+//				System.out.println("★★ 작성된 게시글을 조회합니다.");
+//				bDao.boardSelect();
+//				
+//			} else if(code == 5) {
+//				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+//				System.out.println("★★ 작성된 게시글을 검색합니다.");
+//				System.out.print("★★ 검색할 키워드를 입력하세요 >> ");
+//				sc.nextLine();
+//				String keyword = sc.nextLine();
+//				bDao.boardSearch(keyword);
+//				
+//			} else if(code == 6) {
+//				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+//				System.out.println("★★ 조회수 순으로 작성된 게시글을 정렬합니다.");
+//				bDao.boardSort();
+//				
+//			} else if(code == 7) {
+//				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+//				System.out.println("★★ 보고싶은 게시글번호를 입력하세요.");
+//				System.out.println("★★ 게시글번호 >> ");
+//				int bno = sc.nextInt();
+//				bDao.boardView(bno);
+//				
+//			} else if(code == 8) {
+//				System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★");
+//				System.out.println("★★ Name: Board Program");
+//				System.out.println("★★ Version: 1.3");
+//				System.out.println("★★ Use: JAVA, ORACLE");
+//				System.out.println("★★ Date: 2019.12.17");
+//				System.out.println("★★ made by bhjo92");
+//				System.out.println("★★ ivy9230@gmail.com");
+//			} else if(code == 9) {
+//				System.out.println("★★★★ [프로그램 종료] ★★★★");
+//				System.exit(0);
+//			}
 			
 		}
 		

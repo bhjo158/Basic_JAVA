@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.BoardMapper.xml">
+	<insert id="boardInsert" parameterType="map">
+		INSERT INTO tbl_board(bno, title, content, writer)
+		VALUES(seq_board.NEXTVAL, #{title}, #{content}, #{writer})
+	</insert>
+	<update id="boardUpdate" parameterType="map">
+		UPDATE tbl_board
+		SET title = #{title},
+			content = #{content},
+			writer = #{writer}
+		WHERE bno = #{bno}
+	</update>
+	<delete id="boardDelete" parameterType="Integer">
+		DELETE
+		FROM tbl_board
+		WHERE bno = #{bno}
+	</delete>
+	<select id="boardSelect" resultType="problem.board.BoardDTO">
+		SELECT *
+		FROM tbl_board
+	</select>
+	<select id="boardSearch" resultType="problem.board.BoardDTO">
+		SELECT *
+		FROM tbl_board
+		WHERE title LIKE #{title}
+	</select>
+</mapper>

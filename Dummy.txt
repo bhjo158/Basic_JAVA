@@ -1,0 +1,213 @@
+-- member table create
+DROP TABLE tbl_member;
+CREATE TABLE tbl_member(
+    id VARCHAR2(50) PRIMARY KEY,
+    pw VARCHAR2(30) NOT NULL,
+    name VARCHAR2(100) NOT NULL,
+    phone VARCHAR2(100) NOT NULL,
+    regdate DATE DEFAULT SYSDATE
+);
+
+INSERT INTO tbl_member(id, pw, name, phone)
+VALUES('동비', '1234', '동선', '010-1234-1234');
+INSERT INTO tbl_member(id, pw, name, phone)
+VALUES('보훈', '2222', '보훈', '010-2222-2222');
+INSERT INTO tbl_member(id, pw, name, phone)
+VALUES('승주', '3333', '승주', '010-3333-3333');
+COMMIT;
+
+SELECT * FROM tbl_member;
+
+
+-- 기획사 테이블 생성
+CREATE TABLE tbl_enter(
+    ano VARCHAR2(20) PRIMARY KEY,   -- 소속 아티스트번호
+    aname VARCHAR2(50) NOT NULL,    -- 아티스트 이름
+    major VARCHAR2(50) NOT NULL,    -- 분야(연기, 가수..)
+    groupyn VARCHAR2(5) NOT NULL,   -- 그룹 유무(y/n)
+    groupnm VARCHAR2(100),          -- 그룹이름
+    sal NUMBER NOT NULL,            -- 연봉
+    regdate DATE DEFAULT SYSDATE    -- 등록일자
+);
+
+-- 시퀀스(자동으로 플러스1)
+-- 시퀀스는 한번 증가하면 마지막 값을 계속 갖고있음
+CREATE SEQUENCE seq_enter
+    START WITH 1    -- 시작값
+    INCREMENT BY 1  -- 증가값
+    NOCYCLE;        -- 순환X 계속 무한대로 증가
+ -- MAXVALUE 20     -- 최대값
+ -- MINVALUE 1      -- 최소값
+ -- CYCLE/NOCYCLE   -- 반복여부
+
+INSERT INTO tbl_enter(ano, aname, major, groupyn, groupnm, sal)
+VALUES(seq_enter.NEXTVAL, '미나', '가수', 'y', '트와이스', 9900);
+
+INSERT INTO tbl_enter(ano, aname, major, groupyn, groupnm, sal)
+VALUES(seq_enter.NEXTVAL, '사나', '가수', 'y', '트와이스', 9300);
+
+INSERT INTO tbl_enter(ano, aname, major, groupyn, groupnm, sal)
+VALUES(seq_enter.NEXTVAL, '나연', '가수', 'y', '트와이스', 9500);
+
+INSERT INTO tbl_enter(ano, aname, major, groupyn, groupnm, sal)
+VALUES(seq_enter.NEXTVAL, '유아', '가수', 'y', '오마이걸', 8500);
+
+INSERT INTO tbl_enter(ano, aname, major, groupyn, groupnm, sal)
+VALUES(seq_enter.NEXTVAL, '아린', '가수', 'y', '오마이걸', 8100);
+
+-- DROP SEQUENCE seq_enter;
+-- TRUNCATE TABLE tbl_enter;
+
+COMMIT;
+
+SELECT * FROM tbl_enter;
+
+-- 테이블 정보 확인
+DESC tbl_enter;
+
+
+
+-- 서점관리 테이블생성
+CREATE TABLE tbl_book(
+    bno VARCHAR2(20) PRIMARY KEY,   -- 책번호
+    bname VARCHAR2(100) NOT NULL,   -- 책이름
+    price NUMBER NOT NULL,          -- 책가격
+    company VARCHAR2(100) NOT NULL, -- 출판사
+    writer VARCHAR2(100) NOT NULL,  -- 저자
+    regdate DATE DEFAULT SYSDATE    -- 출판일자
+);
+CREATE SEQUENCE seq_book
+    START WITH 1
+    INCREMENT BY 1
+    NOCYCLE;
+    
+INSERT INTO tbl_book(bno, bname, price, company, writer)
+VALUES(seq_book.NEXTVAL, 'Do it 자바프로그래밍 입문', 25000, '이지스퍼블리싱', '박은종');
+INSERT INTO tbl_book(bno, bname, price, company, writer)
+VALUES(seq_book.NEXTVAL, '열혈 Java 프로그래밍', 30000, '오렌지미디어', '윤성우');
+INSERT INTO tbl_book(bno, bname, price, company, writer)
+VALUES(seq_book.NEXTVAL, '예제로 익히는 제이쿼리 3', 33000, '에이콘', '아담 보두치');
+INSERT INTO tbl_book(bno, bname, price, company, writer)
+VALUES(seq_book.NEXTVAL, '오라클과 SQL PS/SQL을 다루는 기술', 28000, '길벗', '홍형경');
+INSERT INTO tbl_book(bno, bname, price, company, writer)
+VALUES(seq_book.NEXTVAL, 'Java! 자바! 잡아?', 22000, '나자바바', '최초롱');
+COMMIT;
+
+SELECT * FROM tbl_book;
+
+
+-- 게시판 테이블 생성
+DROP TABLE tbl_board;
+CREATE TABLE tbl_board(
+    bno NUMBER PRIMARY KEY,
+    title VARCHAR2(200) NOT NULL,
+    content VARCHAR2(500) NOT NULL,
+    writer VARCHAR2(100) NOT NULL,
+    viewcnt NUMBER DEFAULT 0,
+    regdate DATE DEFAULT SYSDATE
+);
+
+-- 상세게시글을 한번 봤을때 조회수가 +1증가
+-- SELECT * FROM tbl_board
+-- WHERE bno = 3; // 3번 상세게시글을 한번 봤음
+-- UPDATE tbl_board
+--    SET viewcnt = viewcnt + 1
+-- WHERE bno = 3;
+
+
+--테이블 만들어보기 연습
+--CREATE TABLE tbl_baseball(
+--    bno NUMBER PRIMARY KEY,
+--    bname VARCHAR2(10) NOT NULL,
+--    bteam VARCHAR2(20),
+--    regdate DATE DEFAULT SYSDATE
+--);
+
+--CREATE TABLE tbl_bakery(
+--    bno NUMBER PRIMARY KEY,
+--    bname VARCHAR2(20) NOT NULL,
+--    regdate DATE DEFAULT SYSDATE
+--);
+DROP SEQUENCE seq_board;
+CREATE SEQUENCE seq_board
+    START WITH 1
+    INCREMENT BY 1
+    NOCYCLE;
+    
+--시퀀스문 만들어보기 연습
+--CREATE SEQUENCE seq_baseball
+--    START WITH 1
+--    INCREMENT BY 1
+--    NOCYCLE;
+
+--CREATE SEQUENCE tbl_lol
+--    START WITH 1
+--    INCREMENT BY 1
+--    NOCYCLE;
+
+--CREATE SEQUENCE seq_bakery
+--    START WITH 1
+--    INCREMENT BY 1
+--    NOCYCLE;
+
+
+INSERT INTO tbl_board(bno, title, content, writer)
+VALUES(seq_board.NEXTVAL,'HelloWorld','print사용 헬로월드출력','java');
+INSERT INTO tbl_board(bno, title, content, writer)
+VALUES(seq_board.NEXTVAL,'HelloSQL','INSERT INTO VALUES','oracle');
+INSERT INTO tbl_board(bno, title, content, writer)
+VALUES(seq_board.NEXTVAL,'HelloHTML','<ul><ol><li>','html');
+INSERT INTO tbl_board(bno, title, content, writer)
+VALUES(seq_board.NEXTVAL,'HelloSpring','배울예정','spring');
+INSERT INTO tbl_board(bno, title, content, writer)
+VALUES(seq_board.NEXTVAL,'HelloWinter','soooooo coooool','bhjo');
+COMMIT;
+
+--INSERT INTO tbl_board(bno, title, content, writer)
+--VALUES(seq_board.NEXTVAL, '자바의신', '자바잘하는비법전수', '조보훈');
+
+
+SELECT * FROM tbl_board;
+
+UPDATE tbl_board
+    SET title = 'SQL정석',
+        content = 'SQL연습법총망라',
+        writer = '조보훈'
+WHERE bno = 7;
+
+--SELECT *
+--FROM tbl_board
+--WHERE bno = 3;
+
+SELECT * 
+FROM tbl_board 
+ORDER BY viewcnt DESC;
+
+DROP TABLE tbl_bank;
+CREATE TABLE tbl_bank(
+    bno NUMBER PRIMARY KEY,     -- 계좌번호
+    bname VARCHAR2(50) NOT NULL, -- 예금주
+    pw VARCHAR2(50) NOT NULL,    -- 계좌 비밀번호
+    money NUMBER DEFAULT 0,      -- 계좌금액
+    regdate DATE DEFAULT SYSDATE -- 계좌개설일
+);
+
+DROP SEQUENCE seq_bank;
+CREATE SEQUENCE seq_bank
+    START WITH 101
+    INCREMENT BY 1
+    NOCYCLE;
+    
+INSERT INTO tbl_bank(bno, bname, pw)
+VALUES(seq_bank.NEXTVAL, '동선', '1234');
+INSERT INTO tbl_bank(bno, bname, pw)
+VALUES(seq_bank.NEXTVAL, '승주', '1111');
+INSERT INTO tbl_bank(bno, bname, pw)
+VALUES(seq_bank.NEXTVAL, '보훈', '2222');
+INSERT INTO tbl_bank(bno, bname, pw)
+VALUES(seq_bank.NEXTVAL, '연승', '3333');
+INSERT INTO tbl_bank(bno, bname, pw)
+VALUES(seq_bank.NEXTVAL, '대군', '4444');
+COMMIT;
+
+SELECT * FROM tbl_bank;

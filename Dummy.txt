@@ -211,3 +211,76 @@ VALUES(seq_bank.NEXTVAL, '대군', '4444');
 COMMIT;
 
 SELECT * FROM tbl_bank;
+
+-- 편의점 테이블
+DROP TABLE tbl_product;
+CREATE TABLE tbl_product(
+    pno NUMBER PRIMARY KEY,
+    pname VARCHAR2(100) NOT NULL UNIQUE,
+    company VARCHAR2(100) NOT NULL,
+    price NUMBER NOT NULL,
+    cnt NUMBER DEFAULT 0,
+    regdate DATE DEFAULT SYSDATE
+);
+
+DROP SEQUENCE seq_product;
+CREATE SEQUENCE seq_product
+    START WITH 1001
+    INCREMENT BY 1
+    NOCYCLE;
+
+INSERT INTO tbl_product(pno, pname, company, price, cnt)
+VALUES(seq_product.NEXTVAL, '초코에몽', '남양', 1300, 10);
+INSERT INTO tbl_product(pno, pname, company, price, cnt)
+VALUES(seq_product.NEXTVAL, '코카콜라', '코카콜라', 900, 5);
+
+COMMIT;
+SELECT * FROM tbl_product;
+
+-- 등록 또는 추가할 제품이름을 입력하세요.
+-- '코카콜라' => DB
+SELECT COUNT(*) FROM tbl_product
+WHERE pname = '코카콜라';
+
+-- 결과 > 1 => 기존에 등록된 제품 => 추가기능 작동
+-- 결과 == 0 => 처음 입고된 제품 => 등록기능 작동
+
+DROP TABLE tbl_sale;
+CREATE TABLE tbl_sale(
+    sno number PRIMARY KEY,
+    sname VARCHAR2(100) NOT NULL,
+    cnt NUMBER NOT NULL,
+    tprice NUMBER NOT NULL,
+    regdate DATE DEFAULT SYSDATE
+);
+
+DROP SEQUENCE seq_sale;
+CREATE SEQUENCE seq_sale
+    START WITH 1
+    INCREMENT BY 1
+    NOCYCLE;
+
+SELECT * FROM tbl_sale;
+
+
+-- 집계함수
+SELECT * FROM tbl_sale;
+
+-- 전체 총판매액
+SELECT SUM(tprice) FROM tbl_sale;
+
+-- 제품별 총판매액
+SELECT sname, SUM(tprice)
+FROM tbl_sale
+GROUP BY sname;
+
+-- 오늘 판매한 제품의 총판매액
+SELECT SUM(tprice) FROM tbl_sale
+WHERE TO_CHAR(regdate,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD'); -- TO_CHAR() ==> 형변환
+ -- 포맷팅
+
+-- 오늘 판매한 상품의 수량과 총금액
+SELECT sname, SUM(cnt), SUM(tprice)
+FROM tbl_sale
+WHERE TO_CHAR(regdate,'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+GROUP BY sname;

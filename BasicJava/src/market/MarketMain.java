@@ -1,5 +1,7 @@
 package market;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class MarketMain {
@@ -11,9 +13,10 @@ public class MarketMain {
 		Scanner sc = new Scanner(System.in);
 		ProductDAO pDao = new ProductDAO();
 		ProductDTO pDto;
+		SaleDAO sDao = new SaleDAO();
 		MarketMain mm = new MarketMain();
 		int code = 0;
-		Boolean flag = false;
+		boolean flag = false;
 		
 		// 프로그램 시작
 		String userid = "";
@@ -55,23 +58,70 @@ public class MarketMain {
 			
 			// 1~8중 코드 값 입력
 			if(code == 1) {
-				System.out.println("♥♥ 현재 판매중인 제품을 조회합니다.");
-				pDao.saleSelectPdt();
-				System.out.println("♥♥ 구매하실 제품의 번호를 입력하세요.");
-				System.out.print("♥♥ 제품번호: ");
-				int pno = sc.nextInt();
-				System.out.println("♥♥ 구매하실 제품의 수량을 입력하세요.");
-				System.out.print("♥♥ 수량: ");
-				int cnt = sc.nextInt();
-				int price = pDao.tpricePdt(pno, cnt);
-				System.out.println("♥♥ 총 가격은 " + price + "원 입니다.");
-				System.out.println("♥♥ 구매하시겠습니까?(y/n) >> ");
-				sc.nextLine();
-				String buyYN = sc.nextLine();
-				if(buyYN.equals("y") || buyYN.equals("yes")) {
-					pDao.salePdt(pno, cnt);
-					System.out.println("♥♥ 결제가 완료되었습니다.");
+				System.out.println("♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥");
+				System.out.println("♥♥ 구매하고 싶은 제품의 번호를 입력하세요.");
+				// 현재 등록된 제품중 재고가 1보다 큰거(즉 수량이 0인 제품을 제외)
+				List<ProductDTO> list = pDao.selectUsePdt(); 
+				int buyCode = 0;
+				int cnt = 0;
+				String sname = "";
+				int price = 0;
+				int tprice = 0;
+				int nowCnt = 0;
+				
+				while(true) {
+					System.out.print("♥♥ 구매번호 >> ");
+					buyCode = sc.nextInt();
+					System.out.print("♥♥ 구매수량 >> ");
+					cnt = sc.nextInt();
+					// 판매하려는 제품명
+					sname = list.get(buyCode-1).getPname();
+					// 사용자가 구매하려는 제품의 1개 가격
+					price = list.get(buyCode-1).getPrice();
+					// 총가격 = 1개가격x구매수량
+					tprice = price * cnt;
+					// 현재 제품에 재고량
+					nowCnt = list.get(buyCode-1).getCnt();
+					
+					if(nowCnt >= cnt) {
+						break;
+					} else {
+						System.out.println("♥♥ [Msg] There is not enough quantity.");
+					}
 				}
+				
+				// tbl_sale에 판매한 기록을 저장(판매하는 제품명, 수량, 총가격)
+				HashMap<String, Object> map = new HashMap<>();
+				map.put("sname", sname);
+				map.put("cnt", cnt);
+				map.put("tprice", tprice);
+				int result = sDao.insertSale(map);
+				if(result > 0) {
+					// tbl_product에서 재고를 마이너스
+					pDao.cntMinusPdt(sname, cnt);
+					System.out.println("판매성공 재고-합니다.");
+				} else {
+					System.out.println("♥♥ [Msg] Error, Contact your admin.");
+				}
+				
+				
+//				System.out.println("♥♥ 현재 판매중인 제품을 조회합니다.");
+//				pDao.saleSelectPdt();
+//				System.out.println("♥♥ 구매하실 제품의 번호를 입력하세요.");
+//				System.out.print("♥♥ 제품번호: ");
+//				int pno = sc.nextInt();
+//				System.out.println("♥♥ 구매하실 제품의 수량을 입력하세요.");
+//				System.out.print("♥♥ 수량: ");
+//				int cnt = sc.nextInt();
+//				int price = pDao.tpricePdt(pno, cnt);
+//				System.out.println("♥♥ 총 가격은 " + price + "원 입니다.");
+//				System.out.println("♥♥ 구매하시겠습니까?(y/n) >> ");
+//				sc.nextLine();
+//				String buyYN = sc.nextLine();
+//				if(buyYN.equals("y") || buyYN.equals("yes")) {
+//					pDao.salePdt(pno, cnt);
+//					System.out.println("♥♥ 결제가 완료되었습니다.");
+//				}
 			} else if(code == 2) {
 				System.out.println("♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥");
 				System.out.println("♥♥ 제품의 이름을 입력하세요.");
@@ -135,6 +185,9 @@ public class MarketMain {
 				String keyword = sc.nextLine();
 				pDao.searchPdt(keyword);
 			} else if(code == 7) {
+				System.out.println("♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥");
+				System.out.println("♥♥ 일일매출현황입니다.");
+				sDao.dashBoard();
 				
 			} else if(code == 8) {
 				System.out.println("♥♥ [Msg] Exit the program.");
